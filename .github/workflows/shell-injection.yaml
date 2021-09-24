@@ -23,12 +23,7 @@ jobs:
     steps:
     - name: Checkout
       uses: actions/checkout@v2
-    - name: Artifact name
-      id: artifact-name
-      run: |
-        echo "::set-output name=artifact-name::build-$(date +'%Y-%m-%d')-${{ github.head_ref }}.img"
     - name: Build
-      env:
-        ARTIFACT_NAME: ${{ steps.artifact-name.outputs.artifact-name }}
       run: |
-        ./build "$ARTIFACT_NAME"
+        artifact_name="build-$(date +'%Y-%m-%d')-${{ github.head_ref }}.img"
+        ./build "$artifact_name"
