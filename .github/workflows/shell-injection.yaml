@@ -9,7 +9,7 @@ jobs:
     steps:
     - name: Check title
       run: |
-        title="${{ github.event.issue.title }}"
+        title="${{ github.event.pull_request.title }}"
         if [[ ! $title =~ ^.*:\ .*$ ]]; then
           echo "Bad issue title"
           exit 1
