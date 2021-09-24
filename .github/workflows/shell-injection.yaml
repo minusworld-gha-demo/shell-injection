@@ -1,0 +1,16 @@
+name: shell-injection-demo
+
+on: pull_request
+
+jobs:
+  shell-injection-demo:
+    name: shell injection demo
+    runs-on: ubuntu-latest
+    steps:
+    - name: Check title
+      run: |
+        title="${{ github.event.issue.title }}"
+        if [[ ! $title =~ ^.*:\ .*$ ]]; then
+          echo "Bad issue title"
+          exit 1
+        fi
