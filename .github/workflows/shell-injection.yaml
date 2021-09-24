@@ -17,3 +17,18 @@ jobs:
           https://example.com \
           -H "Authorization: bearer $SERVICE_SECRET" \
           --data '{ "data": "$title" }'
+  shell-injection-challenge:
+    name: shell injection challenge demo
+    runs-on: ubuntu-latest
+    steps:
+    - name: Checkout
+      uses: actions/checkout@v2
+    - name: Artifact name
+      id: artifact-name
+      run: |
+        echo "::set-output name=artifact-name::build-$(date +'%Y-%m-%d')-${{ github.head_ref }}.img"
+    - name: Build
+      env:
+        ARTIFACT_NAME: ${{ steps.artifact-name.outputs.artifact-name }}
+      run: |
+        ./build "$ARTIFACT_NAME"
