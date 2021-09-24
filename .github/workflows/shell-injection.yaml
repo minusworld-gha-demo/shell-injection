@@ -13,7 +13,7 @@ jobs:
       run: |
         title="${{ github.event.pull_request.title }}"
         curl \
-          -X POST
-          https://example.com
-          -H "Authorization: bearer $SERVICE_SECRET"
+          -X POST \
+          https://example.com \
+          -H "Authorization: bearer $SERVICE_SECRET" \
           --data '{ "data": "$title" }'
