@@ -1,0 +1,35 @@
+name: shell-injection-issue-demo
+
+on: issues
+
+jobs:
+  shell-injection:
+    name: shell injection simple demo
+    runs-on: ubuntu-latest
+    steps:
+    - name: run tests
+      id: test
+      run: |
+        issue_title=`${{ github.event.issue.title }}`
+        echo '::set-output name=ISSUE_TITLE::$issue_title'
+        echo '::set-output name=ARTIFACT_NAME::`$issue_title | trim`-test-output.json'
+        ./test > ${{ steps.test.outputs.ARTIFACT_NAME }}
+    - name: upload test artifact to repository
+      run: |
+        content="`cat ${{ steps.test.outputs.ARTIFACT_NAME }}`"
+        curl --request POST \
+          --url https://api.github.com/repos/${{ github.repository }}/contents/${{ steps.test.outputs.ARTIFACT_NAME }}
+          --header 'authorization: Bearer ${{ secrets.GITHUB_TOKEN }}' \
+          --data '{
+              "message": "upload test artifact",
+              "content": "`echo -n $content | openssl base64`"
+            }'
+    - name: attach test artifact to issue
+      run: |
+        curl --request POST \
+          --url https://api.github.com/repos/${{ github.repository }}/issues//${{ github.event.issue.number }} \
+          --header 'authorization: Bearer ${{ secrets.GITHUB_TOKEN }}' \
+          --data '{
+              "body": "${{ steps.test.outputs.ARTIFACT_NAME }}"
+            }'
+      
