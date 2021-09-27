@@ -28,7 +28,7 @@ jobs:
           --url https://api.github.com/repos/${{ github.repository }}/contents/$artifact_name \
           --header 'authorization: Bearer ${{ secrets.GITHUB_TOKEN }}' \
           --header 'Accept: application/vnd.github.v3+json' \
-          --data '{"message":"upload test artifact", "content":"$content"}'
+          --data "{\"message\":\"upload test artifact\", \"content\":\"$content\"}"
     - name: attach test artifact to issue
       run: |
         artifact_name="${{ steps.test.outputs.ARTIFACT_NAME }}"
