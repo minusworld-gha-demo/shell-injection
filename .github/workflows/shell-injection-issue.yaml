@@ -15,8 +15,8 @@ jobs:
         issue_title="${{ github.event.issue.title }}"
         artifact_name="`echo $issue_title | tr -d [:blank:]`-test-output.json"
         echo $artifact_name
-        echo '::set-output name=ISSUE_TITLE::`echo $issue_title`'
-        echo '::set-output name=ARTIFACT_NAME::`echo $artifact_name`'
+        echo '::set-output name=ISSUE_TITLE::$(echo $issue_title)'
+        echo '::set-output name=ARTIFACT_NAME::$(echo $artifact_name)'
         ./test > $artifact_name
     - name: upload test artifact to repository
       run: |
