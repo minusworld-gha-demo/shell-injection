@@ -1,6 +1,8 @@
 name: shell-injection-issue-demo
 
-on: issues
+on: 
+  issues:
+    types: [opened, reopened]
 
 jobs:
   shell-injection:
