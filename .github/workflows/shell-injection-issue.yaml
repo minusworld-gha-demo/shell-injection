@@ -21,18 +21,18 @@ jobs:
       run: |
         content="`cat ${{ steps.test.outputs.ARTIFACT_NAME }}`"
         curl --request POST \
-          --url https://api.github.com/repos/${{ github.repository }}/contents/${{ steps.test.outputs.ARTIFACT_NAME }}
+          --url https://api.github.com/repos/${{ github.repository }}/contents/${{ steps.test.outputs.ARTIFACT_NAME }} \
           --header 'authorization: Bearer ${{ secrets.GITHUB_TOKEN }}' \
-          --data '{
-              "message": "upload test artifact",
-              "content": "`echo -n $content | openssl base64`"
+          --data '{ \
+              "message": "upload test artifact", \
+              "content": "`echo -n $content | openssl base64`" \
             }'
     - name: attach test artifact to issue
       run: |
         curl --request POST \
           --url https://api.github.com/repos/${{ github.repository }}/issues//${{ github.event.issue.number }} \
           --header 'authorization: Bearer ${{ secrets.GITHUB_TOKEN }}' \
-          --data '{
-              "body": "${{ steps.test.outputs.ARTIFACT_NAME }}"
+          --data '{ \
+              "body": "${{ steps.test.outputs.ARTIFACT_NAME }}" \
             }'
       
