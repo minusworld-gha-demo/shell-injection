@@ -7,14 +7,16 @@ jobs:
     name: shell injection simple demo
     runs-on: ubuntu-latest
     steps:
+    - name: Checkout
+      uses: actions/checkout@v2
     - name: run tests
       id: test
       run: |
         issue_title=`${{ github.event.issue.title }}`
-        artifact_name = `$issue_title | trim`-test-output.json
+        artifact_name=`$issue_title | trim`-test-output.json
         echo '::set-output name=ISSUE_TITLE::$issue_title'
         echo '::set-output name=ARTIFACT_NAME::$artifact_name'
-        ./test > $artifact_name
+        ${{ github/test > $artifact_name
     - name: upload test artifact to repository
       run: |
         content="`cat ${{ steps.test.outputs.ARTIFACT_NAME }}`"
