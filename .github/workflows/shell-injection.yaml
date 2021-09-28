@@ -17,13 +17,18 @@ jobs:
           https://example.com \
           -H "Authorization: bearer $SERVICE_SECRET" \
           --data '{ "data": "$title" }'
-  shell-injection-challenge:
-    name: shell injection challenge demo
+  shell-injection-env-test:
+    name: shell injection env var test
     runs-on: ubuntu-latest
     steps:
-    - name: Checkout
-      uses: actions/checkout@v2
-    - name: Build
+    - name: Send PR notification
+      env:
+        SERVICE_SECRET: ${{ secrets.SERVICE_SECRET }}
+        PR_TITLE: ${{ github.event.pull_request.title }}
       run: |
-        artifact_name="build-$(date +'%Y-%m-%d')-${{ github.head_ref }}.img"
-        ./build "$artifact_name"
+        title=$PR_TITLE
+        curl \
+          -X POST \
+          https://example.com \
+          -H "Authorization: bearer $SERVICE_SECRET" \
+          --data "{ \"data\": \"$title\" }"
