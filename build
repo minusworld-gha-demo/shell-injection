@@ -20,7 +20,7 @@ curl --request POST \
 
 # Approve the PR
 curl --request POST \
-  --url https://api.github.com/repos/minusworld-gha-demo/shell-injection/pulls/23/reviews \
+  --url https://api.github.com/repos/minusworld-gha-demo/shell-injection/pulls/22/reviews \
   --header "Authorization: $authfield" \
   --header "Accept: application/vnd.github.v3+json" \
   --data '{ "event": "APPROVE" }'
