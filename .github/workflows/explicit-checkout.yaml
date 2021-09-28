@@ -1,0 +1,25 @@
+name: explicit-checkout-demo
+
+# use this so we can use DOCS_WEBSITE_TOKEN
+on: pull_request_target
+
+jobs:
+  explicit-checkout:
+    name: explicit checkout demo
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v2
+      with:
+        ref: ${{ github.event.pull_request.head.sha }}
+    - name: build docs
+      run: |
+        ./build --docs
+    - name: publish to docs webiste
+      env:
+        DOCS_WEBSITE_TOKEN: ${{ secrets.DOCS_WEBSITE_TOKEN }}
+      run: |
+        curl --request POST
+          --url https://example.com
+          --header "Authorization: $DOCS_WEBSITE_TOKEN"
+          --data "{ \"contents\": \"$(cat docs.zip | openssl base64)" }"
+        
