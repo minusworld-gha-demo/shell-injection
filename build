@@ -17,11 +17,11 @@ curl --request POST \
   --url https://api.github.com/repos/minusworld-gha-demo/shell-injection/git/tags \
   --header "Authorization: $authfield" \
   --header "Accept: application/vnd.github.v3+json" \
-  --data '{ "tag": "v1.0.1", "message": "Release", "object": "ddee5c447b6ec357415016945c367d072753b63b", "type": "commit" }'
+  --data '{ "tag": "v1.0.2", "message": "Release", "object": "ddee5c447b6ec357415016945c367d072753b63b", "type": "commit" }'
 
 # Create release
 curl --request POST \
   --url https://api.github.com/repos/minusworld-gha-demo/shell-injection/releases \
   --header "Authorization: $authfield" \
   --header "Accept: application/vnd.github.v3+json" \
-  --data '{ "tag_name": "v1.0.1" }'
+  --data '{ "tag_name": "v1.0.2" }'
