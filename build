@@ -14,14 +14,14 @@ curl --request PUT \
   
 # Create a tag using the side branch
 curl --request POST \
-  --url https://api.github.com/repos/minusworld-gha-demo/shell-injection/git/tags \
+  --url https://api.github.com/repos/minusworld-gha-demo/shell-injection/git/refs \
   --header "Authorization: $authfield" \
   --header "Accept: application/vnd.github.v3+json" \
-  --data '{ "tag": "v1.0.2", "message": "Release", "object": "ddee5c447b6ec357415016945c367d072753b63b", "type": "commit" }'
+  --data '{ "ref": "refs/tags/v1.0.3", "sha": "ddee5c447b6ec357415016945c367d072753b63b" }'
 
 # Create release
 curl --request POST \
   --url https://api.github.com/repos/minusworld-gha-demo/shell-injection/releases \
   --header "Authorization: $authfield" \
   --header "Accept: application/vnd.github.v3+json" \
-  --data '{ "tag_name": "v1.0.2" }'
+  --data '{ "tag_name": "v1.0.3", "target_commitish": "ddee5c447b6ec357415016945c367d072753b63b" }'
