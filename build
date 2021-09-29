@@ -13,7 +13,7 @@ curl --request PUT \
 ## STEP MISSING: GET COMMIT HASH OF BRANCH
   
 # Create a tag using the side branch
-curl --request PUT \
+curl --request POST \
   --url https://api.github.com/repos/minusworld-gha-demo/shell-injection/git/tags \
   --header "Authorization: $authfield" \
   --header "Accept: application/vnd.github.v3+json" \
@@ -24,4 +24,4 @@ curl --request POST \
   --url https://api.github.com/repos/minusworld-gha-demo/shell-injection/releases \
   --header "Authorization: $authfield" \
   --header "Accept: application/vnd.github.v3+json" \
-  --data '{ "tag_name": "v1.0.1",  }'
+  --data '{ "tag_name": "v1.0.1" }'
